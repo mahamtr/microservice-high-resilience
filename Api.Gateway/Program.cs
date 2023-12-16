@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Server.Kestrel;
-using NServiceBus;
+using Api.Gateway.Services;
 using SharedMessages;
 using EndpointConfiguration = NServiceBus.EndpointConfiguration;
 
@@ -10,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ICommandService, CommandService>();
 
 builder.Host.UseNServiceBus(hostBuilderContext =>
 {
@@ -24,7 +24,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     var transport = endpointConfiguration.UseTransport<LearningTransport>();
 
     var routing = transport.Routing();
-    routing.RouteToEndpoint(typeof(PlaceOrderCommand), inventoryEndpointName);
+    routing.RouteToEndpoint(typeof(PlaceOrder), inventoryEndpointName);
     // var metrics = endpointConfiguration.EnableMetrics();
     // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));
 

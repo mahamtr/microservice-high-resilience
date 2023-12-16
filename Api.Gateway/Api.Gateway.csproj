@@ -9,21 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-<!--        <PackageReference Include="Microsoft.AspNetCore.OpenApi" />-->
-<!--        <PackageReference Include="NServiceBus" />-->
-<!--        <PackageReference Include="NServiceBus.Extensions.Hosting"  />-->
-<!--        <PackageReference Include="NServiceBus.Metrics.ServiceControl"  />-->
-<!--        <PackageReference Include="Swashbuckle.AspNetCore" />-->
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SharedMessages\SharedMessages.csproj" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>

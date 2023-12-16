@@ -1,4 +1,5 @@
 using Inventory.Microservice;
+using SharedMessages.SharedData;
 
 var builder = Host.CreateDefaultBuilder(args);
 
@@ -22,6 +23,9 @@ builder.UseNServiceBus(hostBuilderContext =>
     .ConfigureServices((context, services) =>
 {
     services.AddHostedService<Worker>();
+    services.Configure<DatabaseSettings>(
+        context.Configuration.GetSection("DatabaseConfig"));
+    services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 });
 
 var host = builder.Build();

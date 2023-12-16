@@ -1,7 +1,7 @@
 ﻿
 namespace SharedMessages;
 
-public class PlaceOrderCommand : ICommand
+public class PlaceOrder : ICommand
 {
     public Guid OrderId { get; set; }
 }
