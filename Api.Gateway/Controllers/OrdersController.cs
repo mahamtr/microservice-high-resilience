@@ -9,9 +9,9 @@ public class OrdersController(ICommandService commandService) : Controller
 {
     
     [HttpGet("[action]")]
-    public async Task<Guid?> PostPurchaseOrder()
+    public async Task<string> PostPurchaseOrder()
     {
-        var orderId = await commandService.PlaceOrder();
-        return orderId;
+        var message = await commandService.PlaceOrder();
+        return message;
     }
 }

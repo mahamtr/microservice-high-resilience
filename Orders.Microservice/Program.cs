@@ -13,6 +13,7 @@ builder.UseNServiceBus(hostBuilderContext =>
     
         //TODO move this to rabbitMQ
         endpointConfiguration.UseTransport<LearningTransport>();
+        endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
 
        
         // var metrics = endpointConfiguration.EnableMetrics();

@@ -9,7 +9,8 @@ builder.UseNServiceBus(hostBuilderContext =>
         var endpointConfiguration =
             new EndpointConfiguration(endpointName);
         endpointConfiguration.UseSerialization<SystemJsonSerializer>();
-    
+        endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
+
     
         //TODO move this to rabbitMQ
         endpointConfiguration.UseTransport<LearningTransport>();

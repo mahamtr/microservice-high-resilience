@@ -17,7 +17,7 @@ builder.UseNServiceBus(hostBuilderContext =>
        
         // var metrics = endpointConfiguration.EnableMetrics();
         // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));
-
+        endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
         return endpointConfiguration;
     })
     .ConfigureServices((context, services) =>

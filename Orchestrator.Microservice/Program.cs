@@ -1,11 +1,13 @@
-using Notifications.Microservice;
-using SharedMessages.SharedData;
+using MongoDB.Driver;
+using Orchestrator.Microservice;
+
 
 var builder = Host.CreateDefaultBuilder(args);
 
 builder.UseNServiceBus(hostBuilderContext =>
     {
-        var endpointName = hostBuilderContext.Configuration.GetSection("NotificationsEndpointName").Value;
+        var mongoDbConnectionString = hostBuilderContext.Configuration.GetSection("MongoDbConnectionString").Value;
+        var endpointName = hostBuilderContext.Configuration.GetSection("OrchestratorEndpointName").Value;
         var endpointConfiguration =
             new EndpointConfiguration(endpointName);
         endpointConfiguration.UseSerialization<SystemJsonSerializer>();
@@ -14,19 +16,18 @@ builder.UseNServiceBus(hostBuilderContext =>
         //TODO move this to rabbitMQ
         endpointConfiguration.UseTransport<LearningTransport>();
 
-       
+        var persistence = endpointConfiguration.UsePersistence<MongoPersistence>();
+        persistence.MongoClient(new MongoClient(mongoDbConnectionString));
         // var metrics = endpointConfiguration.EnableMetrics();
         // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));
         endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
-
         return endpointConfiguration;
     })
     .ConfigureServices((context, services) =>
     {
         services.AddHostedService<Worker>();
-        services.Configure<DatabaseSettings>(
-            context.Configuration.GetSection("DatabaseConfig"));
-        services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>));
     });
+
+
 var host = builder.Build();
 host.Run();

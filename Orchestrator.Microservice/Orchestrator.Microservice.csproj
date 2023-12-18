@@ -1,12 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <InvariantGlobalization>true</InvariantGlobalization>
+        <UserSecretsId>dotnet-Orchestrator.Microservice-34F6EEE8-1847-4559-B303-0E4C6A3ABB02</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NServiceBus.Storage.MongoDB" />
+    </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\.dockerignore">
@@ -17,10 +21,4 @@
     <ItemGroup>
       <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="NServiceBus.Callbacks" />
-      <PackageReference Include="NServiceBus.Storage.MongoDB" />
-    </ItemGroup>
-
 </Project>

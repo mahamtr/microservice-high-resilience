@@ -1,5 +1,7 @@
 using Api.Gateway.Services;
+using MongoDB.Driver;
 using SharedMessages;
+using SharedMessages.Events;
 using EndpointConfiguration = NServiceBus.EndpointConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,18 +15,21 @@ builder.Services.AddScoped<ICommandService, CommandService>();
 
 builder.Host.UseNServiceBus(hostBuilderContext =>
 {
+    var mongoDbConnectionString = hostBuilderContext.Configuration.GetSection("MongoDbConnectionString").Value;
     var endpointName = hostBuilderContext.Configuration.GetSection("ApiGatewayEndpointName").Value;
     var inventoryEndpointName = hostBuilderContext.Configuration.GetSection("InventoryEndpointName").Value;
     var endpointConfiguration =
         new EndpointConfiguration(endpointName);
     endpointConfiguration.UseSerialization<SystemJsonSerializer>();
     
-    
+
     //TODO move this to rabbitMQ
     var transport = endpointConfiguration.UseTransport<LearningTransport>();
+    endpointConfiguration.EnableCallbacks();
 
-    var routing = transport.Routing();
-    routing.RouteToEndpoint(typeof(PlaceOrder), inventoryEndpointName);
+    // var routing = transport.Routing();
+    // routing.RouteToEndpoint(typeof(StartOrder), inventoryEndpointName);
+    endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
     // var metrics = endpointConfiguration.EnableMetrics();
     // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));
 
