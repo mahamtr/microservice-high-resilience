@@ -1,3 +1,6 @@
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Payments.Microservice;
 using SharedMessages.SharedData;
 
@@ -8,6 +11,7 @@ builder.UseNServiceBus(hostBuilderContext =>
         var endpointName = hostBuilderContext.Configuration.GetSection("PaymentsEndpointName").Value;
         var endpointConfiguration =
             new EndpointConfiguration(endpointName);
+        endpointConfiguration.EnableOpenTelemetry();
         endpointConfiguration.UseSerialization<SystemJsonSerializer>();
         endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
 
@@ -28,6 +32,13 @@ builder.UseNServiceBus(hostBuilderContext =>
             context.Configuration.GetSection("DatabaseConfig"));
         services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>));
     });
+
+var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("PaymentsEndpoint"))
+    .AddSource("NServiceBus.Core")
+    .AddJaegerExporter()    .AddConsoleExporter()
+
+    .Build();
 
 var host = builder.Build();
 host.Run();

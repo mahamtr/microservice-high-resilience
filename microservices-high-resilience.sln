@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.Microservice"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{4A2FDD9E-973F-401D-AC93-B70C9514C74F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchestrator.Microservice", "Orchestrator.Microservice\Orchestrator.Microservice.csproj", "{0706D8A7-585E-4464-97A1-134C42C1F749}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,9 +42,5 @@ Global
 		{4A2FDD9E-973F-401D-AC93-B70C9514C74F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A2FDD9E-973F-401D-AC93-B70C9514C74F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A2FDD9E-973F-401D-AC93-B70C9514C74F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0706D8A7-585E-4464-97A1-134C42C1F749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0706D8A7-585E-4464-97A1-134C42C1F749}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0706D8A7-585E-4464-97A1-134C42C1F749}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0706D8A7-585E-4464-97A1-134C42C1F749}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

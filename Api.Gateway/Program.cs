@@ -1,5 +1,8 @@
 using Api.Gateway.Services;
 using MongoDB.Driver;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using SharedMessages;
 using SharedMessages.Events;
 using EndpointConfiguration = NServiceBus.EndpointConfiguration;
@@ -17,9 +20,9 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 {
     var mongoDbConnectionString = hostBuilderContext.Configuration.GetSection("MongoDbConnectionString").Value;
     var endpointName = hostBuilderContext.Configuration.GetSection("ApiGatewayEndpointName").Value;
-    var inventoryEndpointName = hostBuilderContext.Configuration.GetSection("InventoryEndpointName").Value;
     var endpointConfiguration =
         new EndpointConfiguration(endpointName);
+    endpointConfiguration.EnableOpenTelemetry();
     endpointConfiguration.UseSerialization<SystemJsonSerializer>();
     
 
@@ -29,12 +32,22 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 
     // var routing = transport.Routing();
     // routing.RouteToEndpoint(typeof(StartOrder), inventoryEndpointName);
+    var persistence = endpointConfiguration.UsePersistence<MongoPersistence>();
     endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
+    persistence.MongoClient(new MongoClient(mongoDbConnectionString));
     // var metrics = endpointConfiguration.EnableMetrics();
     // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));
 
     return endpointConfiguration;
 });
+
+var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ApiGatewayEndpoint"))
+    .AddSource("NServiceBus.Core")
+    .AddSource("*")
+    .AddJaegerExporter()
+    .AddConsoleExporter()
+    .Build();
 
 
 var app = builder.Build();

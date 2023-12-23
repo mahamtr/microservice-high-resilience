@@ -21,5 +21,8 @@
     <ItemGroup>
       <PackageReference Include="MongoDB.Bson" />
       <PackageReference Include="MongoDB.Driver" />
+      <PackageReference Include="OpenTelemetry" />
+      <PackageReference Include="OpenTelemetry.Exporter.Console" />
+        <PackageReference Include="OpenTelemetry.Exporter.Jaeger" />
     </ItemGroup>
 </Project>

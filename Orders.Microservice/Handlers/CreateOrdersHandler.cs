@@ -15,7 +15,7 @@ public class CreateOrdersHandler(ILogger<CreateOrdersHandler> logger,
 
     public async Task Handle(CreateOrders message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("OrchestratorEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
         var messageData = string.Empty;
         var purchaseOrderId = string.Empty;
         var shippingOrderId = string.Empty;

@@ -21,6 +21,9 @@
     <ItemGroup>
       <PackageReference Include="NServiceBus.Callbacks" />
       <PackageReference Include="NServiceBus.Storage.MongoDB" />
+      <PackageReference Include="OpenTelemetry" />
+      <PackageReference Include="OpenTelemetry.Exporter.Console" />
+      <PackageReference Include="OpenTelemetry.Exporter.Jaeger" />
     </ItemGroup>
 
 </Project>

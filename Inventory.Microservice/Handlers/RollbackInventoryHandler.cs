@@ -17,7 +17,7 @@ public class RollbackInventoryHandler(
 
     public async Task Handle(RollbackInventory message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("OrchestratorEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
         try
         {
             var inventoryDetail = await inventoryRepo.GetAsync(message.InventoryId ?? "");

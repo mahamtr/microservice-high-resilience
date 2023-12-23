@@ -17,7 +17,7 @@ public class UpdateInventoryHandler(
 
     public async Task Handle(UpdateInventory message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("OrchestratorEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
         var messageData = string.Empty;
         try
         {

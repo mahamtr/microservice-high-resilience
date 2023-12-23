@@ -10,7 +10,7 @@ public class NotifyCustomerHandler(ILogger<NotifyCustomerHandler> logger, IConfi
 
     public async Task Handle(NotifyCustomer message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("OrchestratorEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
         var messageData = string.Empty;
         try
         {

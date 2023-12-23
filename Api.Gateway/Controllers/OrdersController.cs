@@ -14,4 +14,11 @@ public class OrdersController(ICommandService commandService) : Controller
         var message = await commandService.PlaceOrder();
         return message;
     }
+    
+    
+    [HttpGet("[action]")]
+    public async Task<string> dummy()
+    {
+        return "message";
+    }
 }
