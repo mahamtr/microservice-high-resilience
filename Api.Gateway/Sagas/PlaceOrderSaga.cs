@@ -3,7 +3,7 @@ using SharedMessages.Events;
 using SharedMessages.ResponseEvents;
 using SharedMessages.Timeout;
 
-namespace Orchestrator.Microservice.Sagas;
+namespace Api.Gateway.Sagas;
 
 public class PlaceOrderSaga(IConfiguration configuration) : Saga<PlaceOrderSagaData>, IAmStartedByMessages<StartOrder>,
     IHandleMessages<InventoryUpdated>, IHandleMessages<PaymentSucceed>, IHandleMessages<OrdersCreated>,

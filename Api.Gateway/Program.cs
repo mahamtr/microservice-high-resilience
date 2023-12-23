@@ -20,7 +20,6 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 {
     var mongoDbConnectionString = hostBuilderContext.Configuration.GetSection("MongoDbConnectionString").Value;
     var endpointName = hostBuilderContext.Configuration.GetSection("ApiGatewayEndpointName").Value;
-    var inventoryEndpointName = hostBuilderContext.Configuration.GetSection("InventoryEndpointName").Value;
     var endpointConfiguration =
         new EndpointConfiguration(endpointName);
     endpointConfiguration.EnableOpenTelemetry();
@@ -33,7 +32,9 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 
     // var routing = transport.Routing();
     // routing.RouteToEndpoint(typeof(StartOrder), inventoryEndpointName);
+    var persistence = endpointConfiguration.UsePersistence<MongoPersistence>();
     endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
+    persistence.MongoClient(new MongoClient(mongoDbConnectionString));
     // var metrics = endpointConfiguration.EnableMetrics();
     // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));
 
@@ -43,6 +44,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 var tracerProvider = Sdk.CreateTracerProviderBuilder()
     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ApiGatewayEndpoint"))
     .AddSource("NServiceBus.Core")
+    .AddSource("*")
     .AddJaegerExporter()
     .AddConsoleExporter()
     .Build();

@@ -16,7 +16,7 @@ public class StartPaymentHandler(ILogger<StartPaymentHandler> logger,
 
     public async Task Handle(StartPayment message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("OrchestratorEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
         var messageData = string.Empty;
         var paymentTransactionId = string.Empty;
 
