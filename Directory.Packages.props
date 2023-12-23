@@ -15,5 +15,8 @@
     <PackageVersion Include="MongoDB.Driver" Version="2.23.1" />
     <PackageVersion Include="NServiceBus.Callbacks" Version="4.0.0" />
     <PackageVersion Include="NServiceBus.Storage.MongoDB" Version="3.0.2" />
+    <PackageVersion Include="OpenTelemetry" Version="1.7.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.7.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Jaeger" Version="1.6.0-rc.1" />
   </ItemGroup>
 </Project>

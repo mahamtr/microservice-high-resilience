@@ -1,4 +1,7 @@
 using MongoDB.Driver;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Orchestrator.Microservice;
 
 
@@ -10,6 +13,7 @@ builder.UseNServiceBus(hostBuilderContext =>
         var endpointName = hostBuilderContext.Configuration.GetSection("OrchestratorEndpointName").Value;
         var endpointConfiguration =
             new EndpointConfiguration(endpointName);
+        endpointConfiguration.EnableOpenTelemetry();
         endpointConfiguration.UseSerialization<SystemJsonSerializer>();
     
     
@@ -18,7 +22,7 @@ builder.UseNServiceBus(hostBuilderContext =>
 
         var persistence = endpointConfiguration.UsePersistence<MongoPersistence>();
         persistence.MongoClient(new MongoClient(mongoDbConnectionString));
-        // var metrics = endpointConfiguration.EnableMetrics();
+        var metrics = endpointConfiguration.EnableMetrics();
         // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));
         endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
         return endpointConfiguration;
@@ -28,6 +32,13 @@ builder.UseNServiceBus(hostBuilderContext =>
         services.AddHostedService<Worker>();
     });
 
+var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("OrchestratorEndpoint"))
+    .AddSource("NServiceBus.Core")
+    .AddJaegerExporter()    .AddConsoleExporter()
+
+    .Build();
 
 var host = builder.Build();
 host.Run();
+

@@ -1,3 +1,6 @@
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Orders.Microservice;
 using SharedMessages.SharedData;
 
@@ -8,6 +11,7 @@ builder.UseNServiceBus(hostBuilderContext =>
         var endpointName = hostBuilderContext.Configuration.GetSection("OrdersEndpointName").Value;
         var endpointConfiguration =
             new EndpointConfiguration(endpointName);
+        endpointConfiguration.EnableOpenTelemetry();
         endpointConfiguration.UseSerialization<SystemJsonSerializer>();
     
     
@@ -28,5 +32,13 @@ builder.UseNServiceBus(hostBuilderContext =>
             context.Configuration.GetSection("DatabaseConfig"));
         services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>));
     });
+
+var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("OrdersEndpoint"))
+    .AddSource("NServiceBus.Core")
+    .AddJaegerExporter()
+    .AddConsoleExporter()    .AddConsoleExporter()
+
+    .Build();
 var host = builder.Build();
 host.Run();

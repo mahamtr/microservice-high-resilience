@@ -17,4 +17,11 @@
     <ItemGroup>
       <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="OpenTelemetry.Exporter.Console" />
+        <PackageReference Include="OpenTelemetry.Exporter.Jaeger" />
+
+        <PackageReference Include="OpenTelemetry" />
+    </ItemGroup>
 </Project>

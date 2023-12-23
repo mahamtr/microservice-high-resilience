@@ -1,5 +1,8 @@
 using Api.Gateway.Services;
 using MongoDB.Driver;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using SharedMessages;
 using SharedMessages.Events;
 using EndpointConfiguration = NServiceBus.EndpointConfiguration;
@@ -20,6 +23,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     var inventoryEndpointName = hostBuilderContext.Configuration.GetSection("InventoryEndpointName").Value;
     var endpointConfiguration =
         new EndpointConfiguration(endpointName);
+    endpointConfiguration.EnableOpenTelemetry();
     endpointConfiguration.UseSerialization<SystemJsonSerializer>();
     
 
@@ -35,6 +39,13 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 
     return endpointConfiguration;
 });
+
+var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ApiGatewayEndpoint"))
+    .AddSource("NServiceBus.Core")
+    .AddJaegerExporter()
+    .AddConsoleExporter()
+    .Build();
 
 
 var app = builder.Build();
