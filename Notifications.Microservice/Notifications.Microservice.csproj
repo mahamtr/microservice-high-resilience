@@ -20,6 +20,8 @@
     </ItemGroup>
 
     <ItemGroup>
+            <PackageReference Include="NServiceBus.Extensions.Hosting" />
+        <PackageReference Include="NServiceBus" />
         <PackageReference Include="NServiceBus.RabbitMQ" />
         <PackageReference Include="OpenTelemetry.Exporter.Console" />
         <PackageReference Include="OpenTelemetry.Exporter.Jaeger" />

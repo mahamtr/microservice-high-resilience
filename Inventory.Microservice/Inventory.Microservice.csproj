@@ -19,6 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="NServiceBus.Extensions.Hosting" />
+        <PackageReference Include="NServiceBus" />
       <PackageReference Include="MongoDB.Bson" />
       <PackageReference Include="MongoDB.Driver" />
       <PackageReference Include="NServiceBus.RabbitMQ" />

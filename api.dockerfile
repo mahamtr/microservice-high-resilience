@@ -8,9 +8,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Api.Gateway/Api.Gateway.csproj", "Api.Gateway/"]
-# COPY ["Directory.Packages.props", "Directory.Packages.props"]
-# COPY ["NuGet.config", "NuGet.config"]
-# COPY ["Shared/Shared.csproj", "Shared/"]
 COPY . .
 RUN dotnet restore "Api.Gateway/Api.Gateway.csproj"
 WORKDIR "/src/Api.Gateway"

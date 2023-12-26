@@ -3,14 +3,13 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="NServiceBus" Version="8.1.6" />
-    <PackageReference Include="NServiceBus.Extensions.Hosting" Version="2.0.0" />
-    <PackageReference Include="NServiceBus.Metrics.ServiceControl" Version="4.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-  </ItemGroup>
-  <ItemGroup>
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageVersion Include="NServiceBus" Version="8.1.6" />
+    <PackageVersion Include="NServiceBus.Extensions.Hosting" Version="2.0.0" />
+    <PackageVersion Include="NServiceBus.Metrics.ServiceControl" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="MongoDB.Bson" Version="2.23.1" />
     <PackageVersion Include="MongoDB.Driver" Version="2.23.1" />
     <PackageVersion Include="NServiceBus.Callbacks" Version="4.0.0" />

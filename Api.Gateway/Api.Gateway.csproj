@@ -19,6 +19,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
+    <PackageReference Include="NServiceBus.Extensions.Hosting" />
+        <PackageReference Include="NServiceBus" />
       <PackageReference Include="NServiceBus.Callbacks" />
       <PackageReference Include="NServiceBus.RabbitMQ" />
       <PackageReference Include="NServiceBus.Storage.MongoDB" />

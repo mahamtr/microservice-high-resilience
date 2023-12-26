@@ -57,7 +57,8 @@ var tracerProvider = Sdk.CreateTracerProviderBuilder()
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// if (app.Environment.IsDevelopment())
+// using swagger in prod since this is a research project
 {
     app.UseSwagger();
     app.UseSwaggerUI();
