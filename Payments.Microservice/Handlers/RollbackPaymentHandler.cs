@@ -16,7 +16,7 @@ public class RollbackPaymentHandler(ILogger<RollbackPaymentHandler> logger,
 
     public async Task Handle(RollbackPayment message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value + "-MAAI");
    
         try
         {

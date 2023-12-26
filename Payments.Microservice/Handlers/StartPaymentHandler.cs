@@ -16,7 +16,7 @@ public class StartPaymentHandler(ILogger<StartPaymentHandler> logger,
 
     public async Task Handle(StartPayment message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value +"-MAAI");
         var messageData = string.Empty;
         var paymentTransactionId = string.Empty;
 

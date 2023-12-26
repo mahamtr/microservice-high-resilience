@@ -8,20 +8,22 @@ var builder = Host.CreateDefaultBuilder(args);
 
 builder.UseNServiceBus(hostBuilderContext =>
     {
+        var rabbitConnectionString = hostBuilderContext.Configuration.GetSection("RabbitConnectionString").Value;
         var endpointName = hostBuilderContext.Configuration.GetSection("NotificationsEndpointName").Value;
         var endpointConfiguration =
             new EndpointConfiguration(endpointName);
         endpointConfiguration.EnableOpenTelemetry();
         endpointConfiguration.UseSerialization<SystemJsonSerializer>();
-    
-    
-        //TODO move this to rabbitMQ
-        endpointConfiguration.UseTransport<LearningTransport>();
 
-       
+    
+    var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
+    transport.UseConventionalRoutingTopology(QueueType.Quorum);
+        transport.ConnectionString(rabbitConnectionString);
+        endpointConfiguration.MakeInstanceUniquelyAddressable("MAAI");
+        endpointConfiguration.EnableInstallers();
+
         // var metrics = endpointConfiguration.EnableMetrics();
         // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));
-        endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
 
         return endpointConfiguration;
     })

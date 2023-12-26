@@ -15,7 +15,7 @@ public class CreateOrdersHandler(ILogger<CreateOrdersHandler> logger,
 
     public async Task Handle(CreateOrders message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value + "-MAAI");
         var messageData = string.Empty;
         var purchaseOrderId = string.Empty;
         var shippingOrderId = string.Empty;

@@ -8,6 +8,7 @@ var builder = Host.CreateDefaultBuilder(args);
 
 builder.UseNServiceBus(hostBuilderContext =>
     {
+        var rabbitConnectionString = hostBuilderContext.Configuration.GetSection("RabbitConnectionString").Value;
         var endpointName = hostBuilderContext.Configuration.GetSection("OrdersEndpointName").Value;
         var endpointConfiguration =
             new EndpointConfiguration(endpointName);
@@ -15,9 +16,11 @@ builder.UseNServiceBus(hostBuilderContext =>
         endpointConfiguration.UseSerialization<SystemJsonSerializer>();
     
     
-        //TODO move this to rabbitMQ
-        endpointConfiguration.UseTransport<LearningTransport>();
-        endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
+    var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
+    transport.UseConventionalRoutingTopology(QueueType.Quorum);
+        transport.ConnectionString(rabbitConnectionString);
+        endpointConfiguration.MakeInstanceUniquelyAddressable("MAAI");
+        endpointConfiguration.EnableInstallers();
 
        
         // var metrics = endpointConfiguration.EnableMetrics();

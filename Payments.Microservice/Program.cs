@@ -8,16 +8,19 @@ var builder = Host.CreateDefaultBuilder(args);
 
 builder.UseNServiceBus(hostBuilderContext =>
     {
+        var rabbitConnectionString = hostBuilderContext.Configuration.GetSection("RabbitConnectionString").Value;
         var endpointName = hostBuilderContext.Configuration.GetSection("PaymentsEndpointName").Value;
         var endpointConfiguration =
             new EndpointConfiguration(endpointName);
         endpointConfiguration.EnableOpenTelemetry();
         endpointConfiguration.UseSerialization<SystemJsonSerializer>();
-        endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
 
     
-        //TODO move this to rabbitMQ
-        endpointConfiguration.UseTransport<LearningTransport>();
+    var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
+    transport.UseConventionalRoutingTopology(QueueType.Quorum);
+        transport.ConnectionString(rabbitConnectionString);
+        endpointConfiguration.MakeInstanceUniquelyAddressable("MAAI");
+        endpointConfiguration.EnableInstallers();
 
        
         // var metrics = endpointConfiguration.EnableMetrics();

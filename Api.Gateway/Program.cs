@@ -19,6 +19,7 @@ builder.Services.AddScoped<ICommandService, CommandService>();
 builder.Host.UseNServiceBus(hostBuilderContext =>
 {
     var mongoDbConnectionString = hostBuilderContext.Configuration.GetSection("MongoDbConnectionString").Value;
+    var rabbitConnectionString = hostBuilderContext.Configuration.GetSection("RabbitConnectionString").Value;
     var endpointName = hostBuilderContext.Configuration.GetSection("ApiGatewayEndpointName").Value;
     var endpointConfiguration =
         new EndpointConfiguration(endpointName);
@@ -26,14 +27,17 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     endpointConfiguration.UseSerialization<SystemJsonSerializer>();
     
 
-    //TODO move this to rabbitMQ
-    var transport = endpointConfiguration.UseTransport<LearningTransport>();
+var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
+    transport.UseConventionalRoutingTopology(QueueType.Quorum);
+    transport.ConnectionString(rabbitConnectionString);
+
     endpointConfiguration.EnableCallbacks();
+    endpointConfiguration.EnableInstallers();
 
     // var routing = transport.Routing();
     // routing.RouteToEndpoint(typeof(StartOrder), inventoryEndpointName);
     var persistence = endpointConfiguration.UsePersistence<MongoPersistence>();
-    endpointConfiguration.MakeInstanceUniquelyAddressable(Environment.MachineName);
+    endpointConfiguration.MakeInstanceUniquelyAddressable("MAAI");
     persistence.MongoClient(new MongoClient(mongoDbConnectionString));
     // var metrics = endpointConfiguration.EnableMetrics();
     // metrics.SendMetricDataToServiceControl("Particular.Monitoring", TimeSpan.FromMilliseconds(500));

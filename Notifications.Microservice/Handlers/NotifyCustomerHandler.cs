@@ -10,7 +10,7 @@ public class NotifyCustomerHandler(ILogger<NotifyCustomerHandler> logger, IConfi
 
     public async Task Handle(NotifyCustomer message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value + "-MAAI");
         var messageData = string.Empty;
         try
         {

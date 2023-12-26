@@ -17,7 +17,7 @@ public class UpdateInventoryHandler(
 
     public async Task Handle(UpdateInventory message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("ApiGatewayEndpointName").Value+"-MAAI");
         var messageData = string.Empty;
         try
         {

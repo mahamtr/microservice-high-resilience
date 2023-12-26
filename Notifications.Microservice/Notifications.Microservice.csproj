@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="NServiceBus.RabbitMQ" />
         <PackageReference Include="OpenTelemetry.Exporter.Console" />
         <PackageReference Include="OpenTelemetry.Exporter.Jaeger" />
         <PackageReference Include="OpenTelemetry" />

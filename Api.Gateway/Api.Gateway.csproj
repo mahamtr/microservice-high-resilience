@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <PackageReference Include="NServiceBus.Callbacks" />
+      <PackageReference Include="NServiceBus.RabbitMQ" />
       <PackageReference Include="NServiceBus.Storage.MongoDB" />
       <PackageReference Include="OpenTelemetry" />
       <PackageReference Include="OpenTelemetry.Exporter.Console" />

@@ -32,7 +32,7 @@ public class PlaceOrderSaga(IConfiguration configuration) : Saga<PlaceOrderSagaD
 
         await RequestTimeout(context, TimeSpan.FromMinutes(1), new CreateOrderTimeout { OrderId = Data.OrderId });
 
-        Options.SetDestination(configuration.GetSection("InventoryEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("InventoryEndpointName").Value + "-MAAI");
         await context.Send(
             new UpdateInventory { OrderId = message.OrderId, Quantity = Data.Quantity, InventoryId = Data.InventoryId },
             Options);
@@ -42,7 +42,7 @@ public class PlaceOrderSaga(IConfiguration configuration) : Saga<PlaceOrderSagaD
     {
         Data.MessageData = message.MessageData;
 
-        Options.SetDestination(configuration.GetSection("PaymentsEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("PaymentsEndpointName").Value + "-MAAI");
         await context.Send(new StartPayment { OrderId = Data.OrderId }, Options);
     }
 
@@ -51,7 +51,7 @@ public class PlaceOrderSaga(IConfiguration configuration) : Saga<PlaceOrderSagaD
         Data.PaymentId = message.PaymentOrderId;
         Data.MessageData = message.MessageData;
 
-        Options.SetDestination(configuration.GetSection("OrdersEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("OrdersEndpointName").Value + "-MAAI");
         await context.Send(new CreateOrders { OrderId = Data.OrderId }, Options);
     }
 
@@ -61,7 +61,7 @@ public class PlaceOrderSaga(IConfiguration configuration) : Saga<PlaceOrderSagaD
         Data.PurchaseOrderId = message.PurchaseOrderId;
         Data.MessageData = message.MessageData;
 
-        Options.SetDestination(configuration.GetSection("NotificationsEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("NotificationsEndpointName").Value + "-MAAI");
         await context.Send(new NotifyCustomer { OrderId = Data.OrderId }, Options);
     }
 
@@ -85,7 +85,7 @@ public class PlaceOrderSaga(IConfiguration configuration) : Saga<PlaceOrderSagaD
 
     public async Task Handle(RejectOrder message, IMessageHandlerContext context)
     {
-        Options.SetDestination(configuration.GetSection("InventoryEndpointName").Value);
+        Options.SetDestination(configuration.GetSection("InventoryEndpointName").Value + "-MAAI");
         switch (message.Failure)
         {
             case CreateOrderFailures.PaymentFailure:
@@ -93,7 +93,7 @@ public class PlaceOrderSaga(IConfiguration configuration) : Saga<PlaceOrderSagaD
                 break;
             case CreateOrderFailures.OrdersCreationFailure:
                 await context.Send(new RollbackInventory {OrderId = Data.OrderId, InventoryId = Data.InventoryId,Quantity = Data.Quantity},Options);
-                Options.SetDestination(configuration.GetSection("PaymentsEndpointName").Value);
+                Options.SetDestination(configuration.GetSection("PaymentsEndpointName").Value + "-MAAI");
                 await context.Send(new RollbackPayment {OrderId = Data.OrderId, PaymentOrderId = Data.PaymentId});
                 break;
             default:
