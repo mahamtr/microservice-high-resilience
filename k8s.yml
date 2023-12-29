@@ -1,0 +1,141 @@
+##api microservice
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestratorapi-deployment
+  labels:
+    app: orchestratorapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orchestratorapi
+  template:
+    metadata:
+      labels:
+        app: orchestratorapi
+    spec:
+      containers:
+        - name: orchestratorapi
+          image: mahamtr/api_srv:latest
+          env:
+            - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+              value: simplest-agent
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orchestratorapi-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: orchestratorapi
+## kubectl port-forward {{podname}} 8080:8080
+
+## payment-service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-deployment
+  labels:
+    app: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+        - name: payment
+          image: mahamtr/payments_srv:latest
+          env:
+            - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+              value: simplest-agent
+          imagePullPolicy: Always
+---  
+## order-service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+        - name: order
+          image: mahamtr/orders_srv:latest
+          env:
+            - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+              value: simplest-agent
+          imagePullPolicy: Always
+---
+## notification-service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-deployment
+  labels:
+    app: notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+        - name: notification
+          image: mahamtr/notifications_srv:latest
+          env:
+            - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+              value: simplest-agent
+          imagePullPolicy: Always
+---
+## inventory-service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-deployment
+  labels:
+    app: inventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory
+  template:
+    metadata:
+      labels:
+        app: inventory
+    spec:
+      containers:
+        - name: inventory
+          image: mahamtr/inventory_srv:latest
+          env:
+            - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+              value: simplest-agent
+          imagePullPolicy: Always
+---
