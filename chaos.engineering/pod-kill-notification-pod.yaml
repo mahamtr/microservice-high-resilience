@@ -1,0 +1,15 @@
+kind: PodChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: default
+  name: podkill
+spec:
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+      app: notification
+  mode: all
+  action: pod-kill
+  duration: 30s
+  gracePeriod: 1
