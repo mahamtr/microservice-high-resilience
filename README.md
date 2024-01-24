@@ -1,6 +1,6 @@
 # Microservice enhanced Saga pattern for resilience
 
-This project was developed for experimentation of resilience patterns in order to enhance resilience in saga pattern in distributed transactions.
+This project was developed for experimentation in order to enhance system resilience against transient faults, using Saga pattern, Kubernetes, and Chaos Engineering.
 
 ## Features
 
