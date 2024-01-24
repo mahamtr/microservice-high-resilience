@@ -10,6 +10,7 @@ This project was developed for experimentation of resilience patterns in order t
 - [Open Telemetry] - Used for recollecting traces of distributed transactions.
 - [Jaegger Tracing] - Used for data visualization of traces of distributed transactions.
 - [RabbitMq] - Used for decoupling development of microservices and automatic load balancing of application load.
+- [MongoDb] - Used for datastore, in order to test data integrity in case of failure and rollback of saga
 
 ## Chaos Engineering Experiments
 
@@ -36,3 +37,4 @@ Results are in research paper in research folder.
 [Jaegger Tracing]: https://www.jaegertracing.io/docs/1.53/features/
 [RabbitMq]: https://www.rabbitmq.com/tutorials/tutorial-two-python.html
 [Kuberentes]: https://kubernetes.io/
+[MongoDb]: https://www.mongodb.com/
